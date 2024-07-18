@@ -9,22 +9,19 @@
       :height="stateScene.height"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <template 
-        v-for="({id, startPoint, inflectionPoint1, inflectionPoint2, endPoint}) in lines"
+      <path 
+        v-for="({ id, path }) in svgLines"
         :key="id"
-      >
-        <path 
-          :d="`M ${startPoint.x},${startPoint.y} C ${inflectionPoint1.x},${inflectionPoint1.y} ${inflectionPoint2.x},${inflectionPoint2.y} ${endPoint.x},${endPoint.y}`"
-        />
-      </template>
+        :d="path" 
+      />
 
       <template v-if="debug">
-        <template v-for="({id, inflectionPoint1, inflectionPoint2 }) in lines" :key="`debug-${id}`">
+        <template v-for="({ id, inflectionPoints }) in lines" :key="`debug-${id}`">
           <circle 
-            v-for="(inflexionPoint, index) in [inflectionPoint1, inflectionPoint2]" 
+            v-for="(inflectionPoint, index) in inflectionPoints" 
             :key="index"
-            :cx="inflexionPoint.x"
-            :cy="inflexionPoint.y"
+            :cx="inflectionPoint.x"
+            :cy="inflectionPoint.y"
             r="3"
             fill="red"
           />
@@ -53,8 +50,16 @@ export default {
     })
 
     const $lineRenderer = ref(null)
-
     let killHandDraw 
+
+    const svgLines = computed(() => {
+      return lines.value.map(({ id, startPoint, inflectionPoints, endPoint }) => {
+        return {
+          id,
+          path: `M ${startPoint.x},${startPoint.y} C ${pointsToSvg(inflectionPoints)} ${endPoint.x},${endPoint.y}`
+        }
+      })
+    })
 
     onMounted(() => {
       Object.assign(stateScene, {
@@ -62,21 +67,30 @@ export default {
         width: $lineRenderer.value.clientWidth,
         height: $lineRenderer.value.clientHeight
       })
-
-      killHandDraw = enableHandDraw(document.querySelector('body'))
     })
 
-    onBeforeUnmount(() => {
-      killHandDraw()
-    })
+    initHandDrawLife()
 
     return {
       stateScene,
       lineRenderer: $lineRenderer,
       lines,
+      svgLines,
       debug
     }
   }
+}
+
+function initHandDrawLife($renderer) {
+  let killHandDraw 
+
+  onMounted(() => {
+    killHandDraw = enableHandDraw(document.querySelector('body'))
+  })
+
+  onBeforeUnmount(() => {
+    killHandDraw()
+  })
 }
 
 function enableHandDraw($renderer) {
@@ -112,6 +126,9 @@ function enableHandDraw($renderer) {
   }
 }
 
+function pointsToSvg (points) {
+  return points.map(point => `${point.x},${point.y}`).join(' ')
+}
 </script>
 
 <style scoped>

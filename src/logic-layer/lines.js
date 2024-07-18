@@ -36,16 +36,18 @@ export function createLineBetween(entryCard, endCard) {
   return {
     id: `${entryCard.id}-${endCard.id}`,
     startPoint,
-    inflectionPoint1: {
-      // x: startPoint.x + ~~(deltaX / 2),
-      // y: startPoint.y - deltaY / 10
-      x: startPoint.x + ~~(Math.abs(deltaX) / 3),
-      y: startPoint.y,
-    },
-    inflectionPoint2: {
-      x: endPoint.x - ~~(Math.abs(deltaX) / 3),
-      y: endPoint.y,
-    },
+    inflectionPoints: [
+      {
+        // x: startPoint.x + ~~(deltaX / 2),
+        // y: startPoint.y - deltaY / 10
+        x: startPoint.x + ~~(Math.abs(deltaX) / 3),
+        y: startPoint.y,
+      },
+      {
+        x: endPoint.x - ~~(Math.abs(deltaX) / 3),
+        y: endPoint.y,
+      },
+    ],
     endPoint,
   };
 }
