@@ -10,18 +10,18 @@
       xmlns="http://www.w3.org/2000/svg"
     >
       <template 
-        v-for="({id, startPoint, inflexionPoint1, inflexionPoint2, endPoint}) in lines"
+        v-for="({id, startPoint, inflectionPoint1, inflectionPoint2, endPoint}) in lines"
         :key="id"
       >
         <path 
-          :d="`M ${startPoint.x},${startPoint.y} C ${inflexionPoint1.x},${inflexionPoint1.y} ${inflexionPoint2.x},${inflexionPoint2.y} ${endPoint.x},${endPoint.y}`"
+          :d="`M ${startPoint.x},${startPoint.y} C ${inflectionPoint1.x},${inflectionPoint1.y} ${inflectionPoint2.x},${inflectionPoint2.y} ${endPoint.x},${endPoint.y}`"
         />
       </template>
 
       <template v-if="debug">
-        <template v-for="({id, inflexionPoint1, inflexionPoint2 }) in lines" :key="`debug-${id}`">
+        <template v-for="({id, inflectionPoint1, inflectionPoint2 }) in lines" :key="`debug-${id}`">
           <circle 
-            v-for="(inflexionPoint, index) in [inflexionPoint1, inflexionPoint2]" 
+            v-for="(inflexionPoint, index) in [inflectionPoint1, inflectionPoint2]" 
             :key="index"
             :cx="inflexionPoint.x"
             :cy="inflexionPoint.y"
