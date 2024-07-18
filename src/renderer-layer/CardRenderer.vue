@@ -15,7 +15,7 @@
 <script>
 import { onBeforeUnmount, onMounted, toRefs } from 'vue'
 import { Draggable } from 'gsap/Draggable'
-import { state, updateCard } from '@/store'
+import { state, actions } from '@/store'
 import { CARD_WIDTH } from '@/constants'
 import Card from '@/renderer-layer/components/Card.vue'
 
@@ -43,7 +43,7 @@ export default {
           }
 
           const rect = $draggedCard.getBoundingClientRect()
-          updateCard($draggedCard.dataset.cardid, {
+          actions.updateCard($draggedCard.dataset.cardid, {
             x: rect.x,
             y: rect.y
           })

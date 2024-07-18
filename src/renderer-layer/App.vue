@@ -27,7 +27,7 @@ import { toRefs } from 'vue'
 import Card from './components/Card.vue'
 import LineRenderer from './LineRenderer.vue'
 import CardRenderer from './CardRenderer.vue'
-import { state, lines } from '../store'
+import { state, memos } from '../store'
 
 export default {
   components: {
@@ -38,6 +38,7 @@ export default {
 
   setup () {
     const { debug } = toRefs(state)
+    const { lines } = memos
     
     return {
       debug,

@@ -33,7 +33,8 @@
 
 <script>
 import { ref, reactive, onMounted, computed, toRefs, onBeforeUnmount } from 'vue'
-import { state, lines } from '@/store'
+import { state, memos } from '@/store'
+import { addHandJointCapacity } from '@/browser/add-hand-joint-capacity'
 
 export default {
   props: {
@@ -42,18 +43,17 @@ export default {
 
   setup () {
     const { debug } = toRefs(state)
+    const { lines } = memos
 
+    const $lineRenderer = ref(null)
     const stateScene = reactive({
       loading: true,
       width: 0,
       height: 0
     })
 
-    const $lineRenderer = ref(null)
-    let killHandDraw 
-
     const svgLines = computed(() => {
-      return lines.value.map(({ id, startPoint, inflectionPoints, endPoint }) => {
+      return memos.lines.value.map(({ id, startPoint, inflectionPoints, endPoint }) => {
         return {
           id,
           path: `M ${startPoint.x},${startPoint.y} C ${pointsToSvg(inflectionPoints)} ${endPoint.x},${endPoint.y}`
@@ -69,7 +69,7 @@ export default {
       })
     })
 
-    initHandDrawLife()
+    useHandJointCapacity(document.querySelector('body'))
 
     return {
       stateScene,
@@ -81,49 +81,14 @@ export default {
   }
 }
 
-function initHandDrawLife($renderer) {
-  let killHandDraw 
+function useHandJointCapacity($container) {
+  let stopDrawEvent 
 
   onMounted(() => {
-    killHandDraw = enableHandDraw(document.querySelector('body'))
+    stopDrawEvent = addHandJointCapacity($container)
   })
 
-  onBeforeUnmount(() => {
-    killHandDraw()
-  })
-}
-
-function enableHandDraw($renderer) {
-  let isDrawing = false
-
-  function onPointerDown(e) {
-    e.preventDefault()  
-    isDrawing = true
-  }
-  
-  function onPointerMove(e) {
-    e.preventDefault()
-    
-    if (!isDrawing) return
-
-    console.log('onPointerMove')
-
-  }
-  
-  function onPointerUp(e) {
-    e.preventDefault()  
-    isDrawing = false
-  }
-
-  $renderer.addEventListener('pointerdown', onPointerDown)
-  $renderer.addEventListener('pointermove', onPointerMove)
-  $renderer.addEventListener('pointerup', onPointerUp)
-
-  return () => {
-    $renderer.removeEventListener('pointerdown', onPointerDown)
-    $renderer.removeEventListener('pointermove', onPointerMove)
-    $renderer.removeEventListener('pointerup', onPointerUp)
-  }
+  onBeforeUnmount(stopDrawEvent)
 }
 
 function pointsToSvg (points) {

@@ -36,27 +36,31 @@ export const state = reactive({
   ],
 });
 
-export const cardById = computed(() => {
-  return state.cards.reduce((acc, card) => {
-    acc[card.id] = card;
-    return acc;
-  }, {});
-});
+export const memos = {
+  cardById: computed(() => {
+    return state.cards.reduce((acc, card) => {
+      acc[card.id] = card;
+      return acc;
+    }, {});
+  }),
 
-export const lines = computed(() => {
-  return [
-    createLineBetween(state.cards[0], state.cards[1]),
-    createLineBetween(state.cards[2], state.cards[1]),
-  ];
-});
+  lines: computed(() => {
+    return [
+      createLineBetween(state.cards[0], state.cards[1]),
+      createLineBetween(state.cards[2], state.cards[1]),
+    ];
+  }),
+};
 
-export const updateCard = (cardId, input) => {
-  if (!input) return;
+export const actions = {
+  updateCard: (cardId, input) => {
+    if (!input) return;
 
-  const card = cardById.value[cardId];
-  if (!card) {
-    console.warn(`Cannot update card ${cardId}. No card found`);
-  }
+    const card = memos.cardById.value[cardId];
+    if (!card) {
+      console.warn(`Cannot update card ${cardId}. No card found`);
+    }
 
-  return Object.assign(card, input);
+    return Object.assign(card, input);
+  },
 };
