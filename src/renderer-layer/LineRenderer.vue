@@ -35,7 +35,7 @@
 <script>
 import { ref, reactive, onMounted, computed, toRefs, onBeforeUnmount, watch } from 'vue'
 import { state, memos } from '@/store'
-import { enableHandJointCapacity } from '@/renderer-layer/browser/enableHandJointCapacity'
+import { useDrawingLine } from '@/renderer-layer/hooks'
 import { lineToPath } from '@/renderer-layer/helpers/lineToPath'
 
 export default {
@@ -71,7 +71,7 @@ export default {
       })
     })
 
-    const { $lineScene } = useHandJointCapacity()
+    const { $lineScene } = useDrawingLine()
 
     return {
       stateRenderer,
@@ -81,30 +81,6 @@ export default {
       svgLines,
       debug,
     }
-  }
-}
-
-function useHandJointCapacity() {
-  let $lineScene = ref(null)
-  let disableHandJointCapacity
-
-  watch($lineScene, ($el) => {
-    if (!$el) {
-      return disableHandJointCapacity?.()
-    }
-
-    disableHandJointCapacity = enableHandJointCapacity({
-      $pointerContainer: document.querySelector('body'),
-      $lineScene: $el,
-    })
-  })
-
-  onBeforeUnmount(() => {
-    disableHandJointCapacity?.()
-  })
-
-  return { 
-    $lineScene 
   }
 }
 </script>

@@ -1,10 +1,38 @@
+import { fromEvent, takeUntil, mergeMap, tap } from "rxjs";
+import { ref, watch, onBeforeUnmount } from "vue";
 import { createLineBetween } from "@/logic-layer/lines";
-import { fromEvent, takeUntil, mergeMap, tap, last } from "rxjs";
 import { lineToPath } from "@/renderer-layer/helpers/lineToPath";
 
 const LINE_ID = "line-draw";
 
-export function enableHandJointCapacity({ $pointerContainer, $lineScene }) {
+// ====================================================== //
+//   Draw a bezirer curve with the current pointer
+// ====================================================== //
+export function useDrawingLine() {
+  let $lineScene = ref(null);
+  let disableHandJointCapacity;
+
+  watch($lineScene, ($currentLineScene) => {
+    if (!$currentLineScene) {
+      return disableHandJointCapacity?.();
+    }
+
+    disableHandJointCapacity = enableHandJointCapacity({
+      $pointerContainer: document.querySelector("body"),
+      $lineScene: $currentLineScene,
+    });
+  });
+
+  onBeforeUnmount(() => {
+    disableHandJointCapacity?.();
+  });
+
+  return {
+    $lineScene,
+  };
+}
+
+function enableHandJointCapacity({ $pointerContainer, $lineScene }) {
   const down$ = fromEvent($pointerContainer, "pointerdown");
   const move$ = fromEvent($pointerContainer, "pointermove");
   const up$ = fromEvent($pointerContainer, "pointerup");

@@ -3,7 +3,7 @@
   <main>
     <div class="engine">
       <LineRenderer />
-      <CodeBlockRenderer />
+      <CodeNodeRenderer />
 
       <div 
         v-if="debug"
@@ -25,13 +25,13 @@
 <script>
 import { toRefs } from 'vue'
 import LineRenderer from './LineRenderer.vue'
-import CodeBlockRenderer from './CodeBlockRenderer.vue'
+import CodeNodeRenderer from './CodeNodeRenderer.vue'
 import { state, memos } from '../store'
 
 export default {
   components: {
     LineRenderer,
-    CodeBlockRenderer
+    CodeNodeRenderer
   },
 
   setup () {
@@ -55,7 +55,7 @@ export default {
   background-image: linear-gradient(to right, #f1f1f1 1px, transparent 1px), linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
 }
 
-.LineRenderer, .CodeBlockRenderer {
+.LineRenderer, .CodeNodeRenderer {
   position: absolute;
   top: 0;
   left: 0;
