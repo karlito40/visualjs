@@ -4,9 +4,10 @@
     class="LineRenderer"
   >
     <svg
-      v-if="!stateScene.loading"
-      :width="stateScene.width"
-      :height="stateScene.height"
+      v-if="!stateRenderer.loading"
+      ref="lineScene"
+      :width="stateRenderer.width"
+      :height="stateRenderer.height"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path 
@@ -32,9 +33,10 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed, toRefs, onBeforeUnmount } from 'vue'
+import { ref, reactive, onMounted, computed, toRefs, onBeforeUnmount, watch } from 'vue'
 import { state, memos } from '@/store'
-import { addHandJointCapacity } from '@/browser/add-hand-joint-capacity'
+import { enableHandJointCapacity } from '@/renderer-layer/browser/enableHandJointCapacity'
+import { lineToPath } from '@/renderer-layer/helpers/lineToPath'
 
 export default {
   props: {
@@ -46,53 +48,64 @@ export default {
     const { lines } = memos
 
     const $lineRenderer = ref(null)
-    const stateScene = reactive({
+    const stateRenderer = reactive({
       loading: true,
       width: 0,
       height: 0
     })
 
     const svgLines = computed(() => {
-      return memos.lines.value.map(({ id, startPoint, inflectionPoints, endPoint }) => {
+      return memos.lines.value.map((line) => {
         return {
-          id,
-          path: `M ${startPoint.x},${startPoint.y} C ${pointsToSvg(inflectionPoints)} ${endPoint.x},${endPoint.y}`
+          id: line.id,
+          path: lineToPath(line)
         }
       })
     })
 
     onMounted(() => {
-      Object.assign(stateScene, {
+      Object.assign(stateRenderer, {
         loading: false,
         width: $lineRenderer.value.clientWidth,
         height: $lineRenderer.value.clientHeight
       })
     })
 
-    useHandJointCapacity(document.querySelector('body'))
+    const { $lineScene } = useHandJointCapacity()
 
     return {
-      stateScene,
+      stateRenderer,
       lineRenderer: $lineRenderer,
+      lineScene: $lineScene,
       lines,
       svgLines,
-      debug
+      debug,
     }
   }
 }
 
-function useHandJointCapacity($container) {
-  let stopDrawEvent 
+function useHandJointCapacity() {
+  let $lineScene = ref(null)
+  let disableHandJointCapacity
 
-  onMounted(() => {
-    stopDrawEvent = addHandJointCapacity($container)
+  watch($lineScene, ($el) => {
+    if (!$el) {
+      return disableHandJointCapacity?.()
+    }
+
+    disableHandJointCapacity = enableHandJointCapacity({
+      $pointerContainer: document.querySelector('body'),
+      $lineScene: $el,
+    })
   })
 
-  onBeforeUnmount(stopDrawEvent)
-}
+  onBeforeUnmount(() => {
+    disableHandJointCapacity?.()
+  })
 
-function pointsToSvg (points) {
-  return points.map(point => `${point.x},${point.y}`).join(' ')
+  return { 
+    $lineScene 
+  }
 }
 </script>
 
@@ -105,8 +118,11 @@ function pointsToSvg (points) {
 .LineRenderer svg {
   position: absolute;
 }
+</style>
 
-path {
+<style>
+/* DANGEROUS GLOBAL STYLE */
+.LineRenderer path {
   stroke: limegreen;
   stroke-width: 0.2rem;
   stroke-linecap: round;

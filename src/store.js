@@ -1,5 +1,5 @@
 import { reactive, computed } from "vue";
-import { createLineBetween } from "@/logic-layer/lines";
+import { createSocketJoint } from "@/logic-layer/lines";
 
 export const state = reactive({
   debug: true,
@@ -46,8 +46,8 @@ export const memos = {
 
   lines: computed(() => {
     return [
-      createLineBetween(state.cards[0], state.cards[1]),
-      createLineBetween(state.cards[2], state.cards[1]),
+      createSocketJoint(state.cards[0], state.cards[1]),
+      createSocketJoint(state.cards[2], state.cards[1]),
     ];
   }),
 };

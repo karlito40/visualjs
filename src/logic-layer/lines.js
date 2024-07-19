@@ -1,20 +1,23 @@
 import { CARD_WIDTH } from "@/constants";
+import { uniqid } from "@/share/uniqid";
 
-export function createLineBetween(entryCard, endCard) {
+const SOCKET_SIZE = 16;
+// TODO: remove
+export function createSocketJoint(fromCodeBox, toCodeBox) {
   // todo
   const socketOutRect = {
-    x: entryCard.x + CARD_WIDTH, // todo: use bounded rect
-    y: entryCard.y + 24,
-    height: 16,
-    width: 16,
+    x: fromCodeBox.x + CARD_WIDTH, // todo: use bounded rect
+    y: fromCodeBox.y + 24, // todo: hardcoded pos
+    height: SOCKET_SIZE,
+    width: SOCKET_SIZE,
   };
 
   // todo
   const socketInRect = {
-    x: endCard.x, // todo: use bounded rect
-    y: endCard.y + 24,
-    height: 16,
-    width: 16,
+    x: toCodeBox.x, // todo: use bounded rect
+    y: toCodeBox.y + 24,
+    height: SOCKET_SIZE,
+    width: SOCKET_SIZE,
   };
 
   const startPoint = {
@@ -31,10 +34,20 @@ export function createLineBetween(entryCard, endCard) {
     // y: endCard.y + ~~(cardSize.height/2),
   };
 
+  return createLineBetween(startPoint, endPoint, {
+    id: `${fromCodeBox.id}-${toCodeBox.id}`,
+  });
+}
+
+export function createLineBetween(
+  startPoint,
+  endPoint,
+  { id = uniqid() } = {}
+) {
   const deltaX = endPoint.x - startPoint.x;
-  const deltaY = endPoint.y - startPoint.y;
+  // const deltaY = endPoint.y - startPoint.y;
   return {
-    id: `${entryCard.id}-${endCard.id}`,
+    id,
     startPoint,
     inflectionPoints: [
       {
