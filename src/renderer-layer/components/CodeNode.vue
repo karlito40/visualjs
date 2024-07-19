@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="Card"
+    class="CodeNode"
     :style="{
       transform: `translate3d(${x}px, ${y}px, 0)`,
       width: `${width}px`,
@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped>
-.Card {
+.CodeNode {
   position: absolute;
   padding: 1rem;
   width: 10rem;
@@ -35,7 +35,7 @@ export default {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-.Card:hover, .Card:hover .socket-out {
+.CodeNode:hover, .CodeNode:hover .socket-out {
   border: 1px solid #87c6ec;
 }
 

@@ -3,7 +3,7 @@
   <main>
     <div class="engine">
       <LineRenderer />
-      <CardRenderer />
+      <CodeBlockRenderer />
 
       <div 
         v-if="debug"
@@ -24,16 +24,14 @@
 
 <script>
 import { toRefs } from 'vue'
-import Card from './components/Card.vue'
 import LineRenderer from './LineRenderer.vue'
-import CardRenderer from './CardRenderer.vue'
+import CodeBlockRenderer from './CodeBlockRenderer.vue'
 import { state, memos } from '../store'
 
 export default {
   components: {
-    Card,
     LineRenderer,
-    CardRenderer
+    CodeBlockRenderer
   },
 
   setup () {
@@ -57,7 +55,7 @@ export default {
   background-image: linear-gradient(to right, #f1f1f1 1px, transparent 1px), linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
 }
 
-.LineRenderer, .CardRenderer {
+.LineRenderer, .CodeBlockRenderer {
   position: absolute;
   top: 0;
   left: 0;

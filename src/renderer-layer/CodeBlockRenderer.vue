@@ -1,13 +1,13 @@
 <template>
-  <div class="CardRenderer">
-    <Card 
-      v-for="card in cards"
-      :key="card.id"
-      :x="card.x"
-      :y="card.y"
+  <div class="CodeBlockRenderer">
+    <CodeNode 
+      v-for="codeNode in codeNodes"
+      :key="codeNode.id"
+      :x="codeNode.x"
+      :y="codeNode.y"
       :width="CARD_WIDTH"
-      :name="card.name"
-      :data-cardId="card.id"
+      :name="codeNode.name"
+      :data-codeNodeId="codeNode.id"
     />
   </div>
 </template>
@@ -17,39 +17,39 @@ import { onBeforeUnmount, onMounted, toRefs } from 'vue'
 import { Draggable } from 'gsap/Draggable'
 import { state, actions } from '@/store'
 import { CARD_WIDTH } from '@/constants'
-import Card from '@/renderer-layer/components/Card.vue'
+import CodeNode from '@/renderer-layer/components/CodeNode.vue'
 
 export default {
   components: {
-    Card
+    CodeNode
   },
 
   setup() {
-    const { cards } = toRefs(state)
+    const { codeNodes } = toRefs(state)
     
     let draggable;
 
     onMounted(() => {
-      let $draggedCard = null
+      let $draggedNode = null
 
-      draggable = Draggable.create('.Card', {
+      draggable = Draggable.create('.CodeNode', {
         inertia: true,
         onDragStart(e) {
-          $draggedCard = e.target
+          $draggedNode = e.target
         },
         onDrag(e) {
-          if (!$draggedCard) {
+          if (!$draggedNode) {
             return;
           }
 
-          const rect = $draggedCard.getBoundingClientRect()
-          actions.updateCard($draggedCard.dataset.cardid, {
+          const rect = $draggedNode.getBoundingClientRect()
+          actions.updateCodeNode($draggedNode.dataset.codenodeid, {
             x: rect.x,
             y: rect.y
           })
         },
         onDragEnd() {
-          $draggedCard = null
+          $draggedNode = null
         }
       });
     })
@@ -59,7 +59,7 @@ export default {
     })
 
     return {
-      cards,
+      codeNodes,
       CARD_WIDTH
     }
   }

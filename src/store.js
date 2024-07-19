@@ -3,7 +3,7 @@ import { createSocketJoint } from "@/logic-layer/lines";
 
 export const state = reactive({
   debug: true,
-  cards: [
+  codeNodes: [
     {
       id: 1,
       name: "Var node",
@@ -37,30 +37,30 @@ export const state = reactive({
 });
 
 export const memos = {
-  cardById: computed(() => {
-    return state.cards.reduce((acc, card) => {
-      acc[card.id] = card;
+  codeNodeById: computed(() => {
+    return state.codeNodes.reduce((acc, codeNode) => {
+      acc[codeNode.id] = codeNode;
       return acc;
     }, {});
   }),
 
   lines: computed(() => {
     return [
-      createSocketJoint(state.cards[0], state.cards[1]),
-      createSocketJoint(state.cards[2], state.cards[1]),
+      createSocketJoint(state.codeNodes[0], state.codeNodes[1]),
+      createSocketJoint(state.codeNodes[2], state.codeNodes[1]),
     ];
   }),
 };
 
 export const actions = {
-  updateCard: (cardId, input) => {
+  updateCodeNode: (nodeId, input) => {
     if (!input) return;
 
-    const card = memos.cardById.value[cardId];
-    if (!card) {
-      console.warn(`Cannot update card ${cardId}. No card found`);
+    const codeNode = memos.codeNodeById.value[nodeId];
+    if (!codeNode) {
+      console.warn(`Cannot update codeNode ${nodeId}. No node found`);
     }
 
-    return Object.assign(card, input);
+    return Object.assign(codeNode, input);
   },
 };
