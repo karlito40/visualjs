@@ -5,4 +5,6 @@
 
 addHandJointCapacity:
   ☐ handle offset between body offset and scene (when not in fullscreen) : mouse position
-  ☐ activer qu'en sortie de socket
+  ☐ dessin libre:
+    ☐ en sortie de socket
+    ☐ sur espace libre 

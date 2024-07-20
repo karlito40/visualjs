@@ -1,4 +1,4 @@
-import { fromEvent, takeUntil, mergeMap, tap } from "rxjs";
+// import { fromEvent, takeUntil, mergeMap, tap } from "rxjs";
 import { ref, watch, onBeforeUnmount } from "vue";
 import { createLineBetween } from "@/logic-layer/lines";
 import { lineToPath } from "@/renderer-layer/helpers/lineToPath";
@@ -33,25 +33,22 @@ export function useDrawingLine() {
 }
 
 function enableHandJointCapacity({ $pointerContainer, $lineScene }) {
-  const down$ = fromEvent($pointerContainer, "pointerdown");
-  const move$ = fromEvent($pointerContainer, "pointermove");
-  const up$ = fromEvent($pointerContainer, "pointerup");
-
   let initialPosition;
   let $currentLine;
-  const draw$ = down$.pipe(
-    tap((down) => {
-      initialPosition = {
-        x: ~~down.clientX,
-        y: ~~down.clientY,
-      };
-      $currentLine = $lineScene.querySelector(`.${LINE_ID}`);
-    }),
+  let isDragging = false;
 
-    mergeMap((down) => move$.pipe(takeUntil(up$)))
-  );
+  function onPointerDown(e) {
+    isDragging = true;
+    initialPosition = {
+      x: ~~e.clientX,
+      y: ~~e.clientY,
+    };
+    $currentLine = $lineScene.querySelector(`.${LINE_ID}`);
+  }
 
-  const drawSubscription = draw$.subscribe((e) => {
+  function onPointerMove(e) {
+    if (!isDragging) return;
+
     const currentPosition = {
       x: ~~e.clientX,
       y: ~~e.clientY,
@@ -68,18 +65,24 @@ function enableHandJointCapacity({ $pointerContainer, $lineScene }) {
     } else {
       $currentLine.setAttribute("d", path);
     }
-  });
+  }
 
-  const upSubscription = up$.subscribe(() => {
+  function onPointerUp(e) {
+    isDragging = false;
     if ($currentLine) {
       $currentLine.remove();
     }
     $currentLine = null;
-  });
+  }
+
+  $pointerContainer.addEventListener("pointerdown", onPointerDown);
+  $pointerContainer.addEventListener("pointermove", onPointerMove);
+  $pointerContainer.addEventListener("pointerup", onPointerUp);
 
   return () => {
-    drawSubscription.unsubscribe();
-    upSubscription.unsubscribe();
+    $pointerContainer.removeEventListener("pointerdown", onPointerDown);
+    $pointerContainer.removeEventListener("pointermove", onPointerMove);
+    $pointerContainer.removeEventListener("pointerup", onPointerUp);
   };
 }
 

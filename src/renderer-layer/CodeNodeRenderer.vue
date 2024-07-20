@@ -1,5 +1,8 @@
 <template>
-  <div class="CodeNodeRenderer">
+  <div 
+    class="CodeNodeRenderer"
+    data-drawable-subject
+  >
     <CodeNode 
       v-for="codeNode in codeNodes"
       :key="codeNode.id"
