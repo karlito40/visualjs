@@ -1,5 +1,5 @@
 import { reactive, computed } from "vue";
-import { createSocketJoint } from "@/logic-layer/lines";
+import { createSocketJoint } from "@/logic-layer/line";
 
 export const state = reactive({
   debug: true,

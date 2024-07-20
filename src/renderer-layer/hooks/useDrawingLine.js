@@ -1,6 +1,6 @@
 // import { fromEvent, takeUntil, mergeMap, tap } from "rxjs";
 import { ref, watch, onBeforeUnmount } from "vue";
-import { createLineBetween } from "@/logic-layer/lines";
+import { createLineBetween } from "@/logic-layer/line";
 import { lineToPath } from "@/renderer-layer/helpers/lineToPath";
 
 const LINE_ID = "line-draw";

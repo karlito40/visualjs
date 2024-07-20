@@ -4,7 +4,13 @@
 ☐ typescript
 
 addHandJointCapacity:
-  ☐ handle offset between body offset and scene (when not in fullscreen) : mouse position
+  ☐ handle offset between body offset and scene (when not in fullscreen) : mouse position , delta
   ☐ dessin libre:
     ☐ en sortie de socket
-    ☐ sur espace libre 
+    ✔ limité à l'arrière plan (ne pas déclencher de ligne au déplacement d'un node) @done(24-07-20 10:50)
+
+MVP:
+  ☐ only one port in, one port out
+  ☐ simple horizontal flow ( x ---> y ----> z ----> a )
+  ☐ search + add node
+  ☐ transform function to node (simpler with typescript and metadata stuff)
