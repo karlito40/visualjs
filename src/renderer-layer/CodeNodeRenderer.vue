@@ -1,7 +1,7 @@
 <template>
   <div 
     class="CodeNodeRenderer"
-    data-drawable-subject
+    data-can-draw-line="true"
   >
     <CodeNode 
       v-for="codeNode in codeNodes"
@@ -10,7 +10,7 @@
       :y="codeNode.y"
       :width="CARD_WIDTH"
       :name="codeNode.name"
-      :data-codeNodeId="codeNode.id"
+      :data-code-node-id="codeNode.id"
     />
   </div>
 </template>

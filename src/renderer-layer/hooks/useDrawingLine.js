@@ -38,6 +38,8 @@ function enableHandJointCapacity({ $pointerContainer, $lineScene }) {
   let isDragging = false;
 
   function onPointerDown(e) {
+    if (!e.target.dataset.canDrawLine) return;
+
     isDragging = true;
     initialPosition = {
       x: ~~e.clientX,

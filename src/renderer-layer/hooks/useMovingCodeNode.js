@@ -21,7 +21,7 @@ export function useMovingCodeNode(querySelector) {
         }
 
         const rect = $draggedNode.getBoundingClientRect();
-        actions.updateCodeNode($draggedNode.dataset.codenodeid, {
+        actions.updateCodeNode($draggedNode.dataset.codeNodeId, {
           x: rect.x,
           y: rect.y,
         });
