@@ -9,7 +9,15 @@
         v-if="debug"
         class="debug-layer"
       >
-        <pre>{{ lines }}</pre>
+        <!-- <div class="debug-lines">
+          lines:
+          <pre>{{ lines }}</pre>
+        </div> -->
+
+        <div class="debug-definitions">
+          definitions:
+          <pre>{{ definitions }}</pre>
+        </div>
       </div>
 
       <button 
@@ -27,6 +35,7 @@ import { toRefs } from 'vue'
 import LineRenderer from './LineRenderer.vue'
 import CodeNodeRenderer from './CodeNodeRenderer.vue'
 import { state, memos } from '../store'
+import { visualjs } from '@/visualjs/visualjs';
 
 export default {
   components: {
@@ -40,7 +49,8 @@ export default {
     
     return {
       debug,
-      lines
+      lines,
+      definitions: visualjs().getDefinitions(), // TODO: hook
     }
   }
 }
@@ -68,5 +78,27 @@ export default {
   bottom: 2rem;
   left: 2rem;
   z-index: 10;
+}
+
+.debug-definitions {
+  position: absolute;
+  bottom: 1rem;
+  left: 10rem;
+  right: 1rem;
+  max-height: 20rem;
+  overflow: auto;
+  
+  padding: 1rem;
+  border: 1px solid #dcdcdc;
+  background: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.debug-lines {
+  position: absolute;
+  max-height: 50rem;
+  width: 15rem;
+  overflow-y: hidden;
+  overflow-y: auto;
 }
 </style>

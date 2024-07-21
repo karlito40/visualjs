@@ -1,0 +1,1 @@
+export { noArgsFunc } from "./noArgsFunc";

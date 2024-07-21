@@ -17,7 +17,7 @@
 
 <script>
 import { toRefs } from 'vue'
-import { state, actions } from '@/store'
+import { state } from '@/store'
 import { CARD_WIDTH } from '@/constants'
 import CodeNode from '@/renderer-layer/components/CodeNode.vue'
 import { useMovingCodeNode } from '@/renderer-layer/hooks';

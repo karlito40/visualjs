@@ -2,12 +2,16 @@
 ☐ relier 2 block à la main
 ☐ forcer un formatter/linter
 ☐ typescript
+☐ di
 
 addHandJointCapacity:
   ☐ handle offset between body offset and scene (when not in fullscreen) : mouse position , delta
   ☐ dessin libre:
     ☐ en sortie de socket
     ✔ limité à l'arrière plan (ne pas déclencher de ligne au déplacement d'un node) @done(24-07-20 10:50)
+
+VISUALJS:
+  ☐ add hook listening definition:added event
 
 MVP:
   ☐ only one port in, one port out

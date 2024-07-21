@@ -56,7 +56,7 @@ function enableHandJointCapacity({ $pointerContainer, $lineScene }) {
       y: ~~e.clientY,
     };
 
-    const line = createLineBetween(initialPosition, currentPosition, LINE_ID);
+    const line = createLineBetween(initialPosition, currentPosition);
     const path = lineToPath(line);
     if (!$currentLine) {
       $currentLine = createPathElement({
