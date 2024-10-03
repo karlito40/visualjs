@@ -36,7 +36,7 @@ export const state = reactive({
   ],
 });
 
-export const memos = {
+export const getters = {
   codeNodeById: computed(() => {
     return state.codeNodes.reduce((acc, codeNode) => {
       acc[codeNode.id] = codeNode;
@@ -56,7 +56,7 @@ export const actions = {
   updateCodeNode: (nodeId, input) => {
     if (!input) return;
 
-    const codeNode = memos.codeNodeById.value[nodeId];
+    const codeNode = getters.codeNodeById.value[nodeId];
     if (!codeNode) {
       console.warn(`Cannot update codeNode ${nodeId}. No node found`);
     }

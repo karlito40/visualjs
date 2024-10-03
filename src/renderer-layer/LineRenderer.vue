@@ -34,7 +34,7 @@
 
 <script>
 import { ref, reactive, onMounted, computed, toRefs, onBeforeUnmount, watch } from 'vue'
-import { state, memos } from '@/store'
+import { state, getters } from '@/store'
 import { useDrawingLine } from '@/renderer-layer/hooks'
 import { lineToPath } from '@/renderer-layer/helpers/lineToPath'
 
@@ -45,7 +45,7 @@ export default {
 
   setup () {
     const { debug } = toRefs(state)
-    const { lines } = memos
+    const { lines } = getters
 
     const $lineRenderer = ref(null)
     const stateRenderer = reactive({
@@ -55,7 +55,7 @@ export default {
     })
 
     const svgLines = computed(() => {
-      return memos.lines.value.map((line) => {
+      return getters.lines.value.map((line) => {
         return {
           id: line.id,
           path: lineToPath(line)

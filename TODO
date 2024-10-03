@@ -1,8 +1,10 @@
 ☐ dynamique card_width
-☐ relier 2 block à la main
+✔ relier 2 block à la main @done(24-10-03 15:47)
 ☐ forcer un formatter/linter
 ☐ typescript
 ☐ di
+☐ handle line & card position on scale
+☐ enable zoom with css zoom
 
 addHandJointCapacity:
   ☐ handle offset between body offset and scene (when not in fullscreen) : mouse position , delta
