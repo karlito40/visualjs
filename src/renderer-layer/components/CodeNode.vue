@@ -1,5 +1,6 @@
 <template>
-  <div 
+  <div
+    ref="codeNode"
     class="CodeNode"
     :style="{
       transform: `translate3d(${x}px, ${y}px, 0)`,
@@ -18,8 +19,25 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+import { useMovingCodeNode } from '../hooks';
+
 export default {
-  props: ['x', 'y', 'width', 'height', 'name']
+  props: ['x', 'y', 'width', 'height', 'name'],
+
+  setup(props, { emit }) {
+    const codeNode = ref(null);
+    useMovingCodeNode(codeNode, {
+      onDrag($event) {
+        console.log('ondrag', $event)
+        emit('drag', $event)
+      }
+    });
+
+    return {
+      codeNode
+    }
+  }
 }
 </script>
 

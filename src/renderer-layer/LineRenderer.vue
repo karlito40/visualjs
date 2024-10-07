@@ -34,17 +34,15 @@
 
 <script>
 import { ref, reactive, onMounted, computed, toRefs, onBeforeUnmount, watch } from 'vue'
-import { state, getters } from '@/store'
+import { store, getters } from '@/store'
 import { useDrawingLine } from '@/renderer-layer/hooks'
 import { lineToPath } from '@/renderer-layer/helpers/lineToPath'
 
 export default {
-  props: {
-    debug: Boolean
-  },
+  props: {},
 
   setup () {
-    const { debug } = toRefs(state)
+    const { debug } = toRefs(store)
     const { lines } = getters
 
     const $lineRenderer = ref(null)

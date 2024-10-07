@@ -13,6 +13,8 @@
   "dependencies": {
     "@panzoom/panzoom": "^4.5.1",
     "gsap": "^3.12.5",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^5.0.7",
     "vue": "^3.4.29"
   },
   "devDependencies": {

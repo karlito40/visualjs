@@ -18,12 +18,35 @@
     </div>
 
     <div class="panel">
-      libraries...
+      <div class="panel-title">
+        Libraries
+      </div>
+
+      <div 
+        v-for="library in libraries"
+        :key="library.name"
+        class="panel-item"
+      >
+        {{ library.name }}
+        <div
+          v-for="definition in library.definitions"
+          :key="definition.id"
+          class="panel-item is-enabled"
+          @click="addCodeNode(definition)"
+        >
+          {{ definition.funcName }}
+        </div>
+      </div>
+      <!-- <pre>libraries: {{ libraries }}</pre> -->
     </div>
 
+
+
     <div class="debug-definitions">
-      definitions:
-      <pre>{{ definitions }}</pre>
+      <!-- definitions:
+      <pre>{{ definitions }}</pre> -->
+      store:
+      <pre>{{ store }}</pre>
     </div>
 
     <button 
@@ -36,10 +59,10 @@
 </template>
 
 <script>
-import { toRefs, onMounted } from 'vue'
+import { toRefs } from 'vue'
 import LineRenderer from './LineRenderer.vue'
 import CodeNodeRenderer from './CodeNodeRenderer.vue'
-import { state, getters } from '../store'
+import { store, getters, actions } from '../store'
 import { visualjs } from '@/visualjs/visualjs';
 // import Panzoom from '@panzoom/panzoom'
 
@@ -50,8 +73,7 @@ export default {
   },
 
   setup () {
-    const { debug } = toRefs(state)
-    const { lines } = getters
+    const { debug } = toRefs(store)
 
     // onMounted(() => {
     //   const elem = document.querySelector('.engine')
@@ -67,8 +89,11 @@ export default {
     
     return {
       debug,
-      lines,
-      definitions: visualjs().getDefinitions(), // TODO: hook
+      store,
+
+      addCodeNode: actions.addCodeNode,
+      // lines: getters.lines,
+      libraries: visualjs().getLibraries(), // TODO: hook
     }
   }
 }
@@ -134,10 +159,30 @@ main {
   bottom: 10rem;
   padding: 1rem;
   background: white;
-  width: 14rem;
+  width: 25rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border: 1px solid #dcdcdc;
+}
+
+.panel-title {
+  font-weight: 500;
+  margin-bottom: 1rem;;
+}
+
+.panel-item {
+  border-bottom: 1px solid #dcdcdc;
+  padding: 0.8rem 0.5rem;
+  border-radius: 10px;
+
+  &.is-enabled:hover {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.02);
+  }
+}
+
+.panel-item:last-child {
+  border-bottom: 0;
 }
 </style>

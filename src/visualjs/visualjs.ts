@@ -1,5 +1,6 @@
 import { getDeclarations } from "./register";
 import { VisualEvent, type VisualDefinition } from "./types";
+import { groupBy } from "lodash-es";
 
 class VisualJS {
   eventManager = new EventTarget();
@@ -28,6 +29,19 @@ class VisualJS {
   // ================ //
   getDefinitions() {
     return this.definitions;
+  }
+
+  getLibraries() {
+    // TODO: not opti at all
+    // this data structure shouldn't be create in a getter
+    const libraryMap = groupBy(this.definitions, "libraryName");
+    const libraries = Object.entries(libraryMap).map(
+      ([libraryName, definitions]) => ({
+        name: libraryName,
+        definitions,
+      })
+    );
+    return libraries;
   }
 }
 

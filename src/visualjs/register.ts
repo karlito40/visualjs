@@ -1,4 +1,5 @@
 import type { VisualDefinition } from "./types";
+import { nanoid } from "nanoid";
 
 const declarations: VisualDefinition[] = [];
 
@@ -6,7 +7,7 @@ const declarations: VisualDefinition[] = [];
 // Typically when you create a lib
 // It will also avoid circular deps issue
 export function register(
-  libraryRef: VisualDefinition["libraryRef"],
+  libraryName: VisualDefinition["libraryName"],
   func: Function,
   {
     args,
@@ -16,11 +17,12 @@ export function register(
 ) {
   // TODO: use visualjs instance if it's already initialized
 
-  console.log("VisualJS register", libraryRef, func.name, args);
+  console.log("VisualJS register", libraryName, func.name, args);
 
   declarations.push({
-    name: func.name,
-    libraryRef,
+    id: nanoid(),
+    libraryName,
+    funcName: func.name,
     func,
     args: args || [],
   });

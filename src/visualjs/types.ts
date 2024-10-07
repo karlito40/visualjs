@@ -1,8 +1,15 @@
-export interface VisualDefinition {
+type NodeArgument = {
   name: string;
-  libraryRef: string;
+  type: "number" | "string" | "any";
+  fillMethod: "manual" | "socket";
+};
+
+export interface VisualDefinition {
+  id: string;
+  libraryName: string;
+  funcName: string;
   func: Function;
-  args: string[];
+  args: NodeArgument[];
 }
 
 export enum VisualEvent {
