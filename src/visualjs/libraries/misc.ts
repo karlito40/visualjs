@@ -1,6 +1,6 @@
 import { register } from "@/visualjs/register";
 
-register("Variable", variable, {
+register("Misc", variable, {
   args: [
     {
       name: "value",
